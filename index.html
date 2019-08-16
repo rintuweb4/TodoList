@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        body{
+background: #eee;
+}
+        i {
+        cursor: pointer;
+      }
+      small {
+        display: none;
+      }
+      li {
+        margin-bottom: 15px;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="row no-gutters mt-5">
+        <div class="container">
+            <h2 class="text-center mb-5">TodoList In JavaScript</h2>
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3">
+                    <form>
+                        <div class="form-row align-items-center">
+                            <div class="col-sm-10">
+                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                <input type="text" class="form-control mb-2" id="todoInput" placeholder="Jane Doe" />
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary mb-2 w-100" id="button">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                        <small class="text-danger">Please Enter the Fieled</small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3">
+                    <div id="todolists">
+                        <ul class=" list-unstyled mt-3"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Store Element
+    const todoInput = document.getElementById("todoInput");
+    const button = document.getElementById("button");
+    const lists = document.getElementById("todolists").firstElementChild;
+
+    button.addEventListener("click", function(e) {
+        e.preventDefault();
+
+        // create Element
+        const li = document.createElement("li");
+        const i = document.createElement("i");
+        const editIcon = document.createElement("i");
+        const saveIcon = document.createElement("i");
+        const wrapIcon = document.createElement("span");
+
+        // Adding Icons
+        i.classList.add("fa", "fa-times-circle", "fa-2x");
+        editIcon.classList.add("fa", "fa-pencil", "pr-3", "fa-2x");
+        saveIcon.classList.add("fa", "fa-check", "pr-3", "fa-2x");
+        wrapIcon.style.cssFloat = "right";
+
+        // title added on hover
+        editIcon.title = "Edit";
+        saveIcon.title = "Save";
+        i.title = "Delete";
+
+
+        // wrap icon with span
+        li.textContent = todoInput.value;
+        li.appendChild(wrapIcon);
+        wrapIcon.appendChild(editIcon);
+        wrapIcon.appendChild(saveIcon);
+        wrapIcon.appendChild(i);
+
+        // error message when empty input
+
+        if (todoInput.value == "") {
+            document.querySelector("small").style.display = "block";
+            return false;
+        } else {
+            document.querySelector("small").style.display = "none";
+            lists.appendChild(li);
+        }
+
+        // reset and remove icons
+        todoInput.value = "";
+        i.addEventListener("click", function() {
+            i.closest("li").remove();
+        });
+        saveIcon.style.display = "none";
+
+        // edit button
+        editIcon.addEventListener("click", function() {
+
+            todoInput.value = li.textContent;
+            todoInput.focus();
+            saveIcon.style.display = "inline-block";
+
+            saveIcon.addEventListener("click", function(e) {
+                if (todoInput.value == "") {
+                    saveIcon.style.display = "none";
+                } else {
+                    let y = this.closest("li");
+                    y.childNodes[0].data = todoInput.value;
+                    console.log(y);
+                    todoInput.value = "";
+                    saveIcon.style.display = "none";
+                    e.stopImmediatePropagation();
+                }
+
+            });
+        });
+    });
+    </script>
+</body>
+
+</html>
